@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>My Page</title>
+    <style>
+        :root{--bg:#f5f7fb;--card:#fff;--accent:#0b74de;--muted:#6b7280}
+        *{box-sizing:border-box}
+        html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+        body{background:var(--bg);color:#111;padding:24px}
+        .container{max-width:900px;margin:0 auto}
+        header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+        h1{font-size:1.25rem;margin:0}
+        nav a{color:var(--accent);text-decoration:none;margin-left:12px}
+        main{background:var(--card);border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(12,20,30,0.06)}
+        .grid{display:grid;grid-template-columns:1fr 300px;gap:16px}
+        .card{background:#fff;border-radius:8px;padding:16px;border:1px solid rgba(15,23,42,0.04)}
+        footer{margin-top:16px;font-size:0.9rem;color:var(--muted);text-align:center}
+        @media (max-width:760px){.grid{grid-template-columns:1fr}}
+        .btn{display:inline-block;padding:8px 12px;border-radius:6px;background:var(--accent);color:#fff;text-decoration:none}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Fich Page</h1>
+            <nav>
+                <a href="#" class="btn">Action</a>
+                <a href="#">Help</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="grid">
+                <section class="card" aria-labelledby="content-title">
+                    <h2 id="content-title">Welcome</h2>
+                    <p>This is a starter HTML page. Replace this content with your own. Use semantic tags like &lt;main&gt;, &lt;section&gt;, and &lt;article&gt; for structure.</p>
+                    <article class="card" style="margin-top:12px">
+                        <h3>Notes</h3>
+                        <ul>
+                            <li>Responsive layout with a simple grid.</li>
+                            <li>Accessible headings and a clear visual hierarchy.</li>
+                            <li>Inline styles for quick editing—move to a separate CSS file when ready.</li>
+                        </ul>
+                    </article>
+                </section>
+
+                <aside class="card" aria-labelledby="meta-title">
+                    <h3 id="meta-title">Details</h3>
+                    <p style="color:var(--muted)">Quick links and metadata can go here.</p>
+                    <p><strong>Status:</strong> Draft</p>
+                    <p style="margin-top:12px"><a href="#" class="btn">Save</a></p>
+                </aside>
+            </div>
+        </main>
+
+        <footer>
+            © <span id="year"></span> — Simple starter page
+        </footer>
+    </div>
+
+    <script>
+        // small script for dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
