@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Entreprise</title>
+
+    <style>
+        /* RESET SIMPLE */
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #f3f4f6;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        }
+
+        a { text-decoration: none; }
+
+        /* =========================
+           NAVBAR HAUTE – STYLE APP SAAS
+           ========================== */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 10px 28px;
+            background: linear-gradient(90deg, #0f172a, #1d4ed8, #6366f1);
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.35);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1d4ed8;
+            font-weight: 800;
+            font-size: 20px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.4);
+        }
+
+        .topbar-title {
+            font-weight: 700;
+            font-size: 17px;
+            color: #e5e7eb;
+            white-space: nowrap;
+        }
+
+        .topbar-center {
+            flex: 1;
+            max-width: 520px;
+        }
+
+        .topbar-search {
+            background: rgba(15, 23, 42, 0.55);
+            border-radius: 999px;
+            padding: 7px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        .topbar-search span {
+            font-size: 14px;
+            color: #cbd5f5;
+        }
+
+        .topbar-search input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            width: 100%;
+            color: #e5e7eb;
+        }
+
+        .topbar-search input::placeholder {
+            color: #9ca3af;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #e5e7eb;
+        }
+
+        /* BOUTONS NAV ICONES – style onglets */
+        .nav-icon-block {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 999px;
+            transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+            color: #e5e7eb;
+        }
+
+        .nav-icon-block:hover {
+            background: rgba(15, 23, 42, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.35);
+        }
+
+        .nav-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            background: rgba(15, 23, 42, 0.75);
+        }
+
+        .nav-label {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .nav-icon-block.active {
+            background: #ffffff;
+            color: #1d4ed8;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.4);
+        }
+
+        .nav-icon-block.active .nav-icon {
+            background: #1d4ed8;
+            color: #ffffff;
+        }
+
+        .nav-icon-block.active .nav-label {
+            font-weight: 600;
+        }
+
+        .nav-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #facc15;
+            color: #111827;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.45);
+        }
+
+        /* =========================
+           LAYOUT PRINCIPAL
+           ========================== */
+        .layout {
+            max-width: 1180px;
+            margin: 18px auto;
+            display: grid;
+            grid-template-columns: 1.1fr 1.7fr 1.1fr;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        /* colonnes gauche/droite collées pendant le scroll */
+        .column-sticky {
+            position: sticky;
+            top: 88px; /* hauteur approx. de la navbar */
+            align-self: flex-start;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+        }
+
+        .card-section {
+            padding: 12px 16px;
+        }
+
+        .card-section + .card-section {
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 11px;
+            margin-right: 6px;
+        }
+
+        /* Colonne gauche – profil */
+        .cover {
+            height: 64px;
+            background: radial-gradient(circle at top left, #4f46e5, #0f172a);
+        }
+
+        .profile-block {
+            position: relative;
+            padding-top: 0;
+        }
+
+        .profile-avatar {
+            position: relative;
+            margin-top: -30px;
+            margin-bottom: 6px;
+        }
+
+        .profile-avatar-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            border: 3px solid #ffffff;
+            background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+            color: #fff;
+            font-weight: 700;
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.4);
+        }
+
+        .profile-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+
+        .profile-location {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .profile-button {
+            display: inline-block;
+            border-radius: 999px;
+            border: 1px solid #1d4ed8;
+            color: #1d4ed8;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .left-links a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .left-links a span:last-child {
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+
+        /* Colonne centrale – composer + offres */
+        .composer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .composer-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+            color: #fff;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .composer-input {
+            flex: 1;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            padding: 10px 16px;
+            font-size: 14px;
+            color: #6b7280;
+            background: #f9fafb;
+            cursor: pointer;
+        }
+
+        .composer-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .composer-action-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 2px 4px;
+        }
+
+        .small-circle {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #1d4ed8;
+        }
+
+        .small-circle-green { border-color:#10b981; }
+        .small-circle-orange { border-color:#f59e0b; }
+
+        .composer-action-item.active span {
+            color:#1d4ed8;
+            font-weight:600;
+        }
+
+        .composer-action-item.active .small-circle-orange {
+            background:#f59e0b;
+            border-color:#f59e0b;
+        }
+
+        .feed-card-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .feed-meta {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .pill-skill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #e5f3ff;
+            color: #1d4ed8;
+            font-size: 11px;
+            margin-right: 6px;
+            margin-top: 4px;
+        }
+
+        .feed-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #6b7280;
+            align-items: center;
+        }
+
+        .feed-actions span:last-child {
+            font-size: 12px;
+        }
+
+        /* Formulaire étendu */
+        .composer-form {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .composer-form.show { display: block; }
+
+        .composer-form input,
+        .composer-form textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 13px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        .composer-form textarea { resize: vertical; }
+
+        .composer-form-footer {
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .emoji-bar {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .emoji-btn {
+            border: none;
+            background: #f3f4f6;
+            border-radius: 999px;
+            padding: 2px 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            padding: 6px 16px;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.5);
+        }
+
+        /* Colonne droite – widgets */
+        .widget-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .widget-item {
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .widget-link {
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Responsive simple */
+        @media (max-width: 1024px) {
+            .topbar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .topbar-center {
+                order: 3;
+                width: 100%;
+                max-width: none;
+            }
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            .column-sticky {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">P</div>
+            <div class="topbar-title">Plateforme d’Affectation</div>
+        </div>
+
+        <div class="topbar-center">
+            <div class="topbar-search">
+                <span>🔍</span>
+                <input type="text" placeholder="Rechercher une offre, un stagiaire, une entreprise…">
+            </div>
+        </div>
+
+        <nav class="topbar-right">
+            <div class="nav-icon-block active" id="nav-accueil">
+                <div class="nav-icon">🏠</div>
+                <span class="nav-label">Accueil</span>
+            </div>
+            <div class="nav-icon-block" id="nav-reseau">
+                <div class="nav-icon">👥</div>
+                <span class="nav-label">Réseau</span>
+            </div>
+            <div class="nav-icon-block" id="nav-offres">
+                <div class="nav-icon">📄</div>
+                <span class="nav-label">Offres</span>
+            </div>
+            <div class="nav-icon-block" id="nav-msg">
+                <div class="nav-icon">💬</div>
+                <span class="nav-label">Messagerie</span>
+            </div>
+            <div class="nav-icon-block" id="nav-vous">
+                <div class="nav-avatar">E</div>
+                <span class="nav-label">Vous</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- LAYOUT 3 COLONNES -->
+    <main class="layout">
+
+        <!-- COLONNE GAUCHE : PROFIL ENTREPRISE (STICKY) -->
+        <section class="column-sticky">
+            <div class="card">
+                <div class="cover"></div>
+                <div class="card-section profile-block">
+                    <div class="profile-avatar">
+                        <div class="profile-avatar-circle">E</div>
+                    </div>
+                    <div class="profile-name">Entreprise Demo</div>
+                    <div class="profile-location">El Jadida · Casablanca-Settat</div>
+                    <div class="muted">Secteur : Industrie / Technologie</div>
+                    <a href="#" class="profile-button">Modifier le profil</a>
+                </div>
+                <div class="card-section left-links">
+                    <a href="#">
+                        <span>Offres publiées</span>
+                        <span id="stat-offres">0</span>
+                    </a>
+                    <a href="#">
+                        <span>Candidatures reçues</span>
+                        <span>24</span>
+                    </a>
+                    <a href="#">
+                        <span>Stagiaires recommandés (IA)</span>
+                        <span>12</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 12px;">
+                <div class="card-section">
+                    <div class="widget-title">Accès rapide</div>
+                    <div class="widget-item"><a href="#" id="open-composer" class="widget-link">Publier une nouvelle offre</a></div>
+                    <div class="widget-item"><a href="#" id="link-mes-offres" class="widget-link">Voir mes offres</a></div>
+                    <div class="widget-item"><a href="#" class="widget-link">Consulter les stagiaires</a></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLONNE CENTRALE : COMPOSER + OFFRES (SCROLL) -->
+        <section>
+
+            <div class="card" id="composer">
+                <div class="card-section">
+                    <div class="composer">
+                        <div class="composer-avatar">E</div>
+                        <div class="composer-input" id="composer-toggle">
+                            Publier une nouvelle offre de stage ou d’emploi…
+                        </div>
+                    </div>
+
+                    <div class="composer-actions">
+                        <button type="button" class="composer-action-item" data-action="desc">
+                            <div class="small-circle"></div>
+                            <span>Ajouter un descriptif</span>
+                        </button>
+                        <button type="button" class="composer-action-item" data-action="skills">
+                            <div class="small-circle small-circle-green"></div>
+                            <span>Compétences requises</span>
+                        </button>
+                        <button type="button" class="composer-action-item" data-action="ia">
+                            <div class="small-circle small-circle-orange"></div>
+                            <span>Activer l’IA</span>
+                        </button>
+                    </div>
+
+                    <div class="composer-form" id="composer-form">
+                        <p class="muted" style="margin-bottom:8px;">
+                             Ajouter une  offre d'emploi / Stage
+                        </p>
+
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <input id="titre-offre" type="text" placeholder="Titre de l’offre">
+                            <input id="ville-offre" type="text" placeholder="Ville (ex : El Jadida)">
+                            <textarea id="desc-offre" rows="3" placeholder="Description de l’offre (tu peux écrire avec des emojis ✨🚀😊)"></textarea>
+                            <input id="comp-offre" type="text" placeholder="Compétences (séparées par des virgules : Python, ML, Git)">
+                            <input id="image-offre" type="file" accept="image/*">
+                        </div>
+
+                        <div class="composer-form-footer">
+                            <div class="emoji-bar">
+                                <button type="button" class="emoji-btn">😊</button>
+                                <button type="button" class="emoji-btn">🚀</button>
+                                <button type="button" class="emoji-btn">💻</button>
+                                <button type="button" class="emoji-btn">🤖</button>
+                                <button type="button" class="emoji-btn">🔥</button>
+                                <button type="button" class="emoji-btn">💼</button>
+                            </div>
+                            <button id="btn-ajouter-offre" class="btn-primary">
+                                Enregistrer l’offre
+                            </button>
+                        </div>
+
+                        <div id="message-offre" style="margin-top:8px; font-size:12px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="offres-container" style="margin-top: 12px;"></div>
+
+        </section>
+
+        <!-- COLONNE DROITE : WIDGETS (STICKY) -->
+        <section class="column-sticky">
+
+            <div class="card">
+                <div class="card-section">
+                    <div class="widget-title">Statistiques rapides</div>
+                    <div class="widget-item">Taux de réponse moyen : <strong>78%</strong></div>
+                    <div class="widget-item">Délai moyen de réponse : <strong>2,3 jours</strong></div>
+                    <div class="widget-item">Offres actives : <strong id="stat-offres-droite">0</strong></div>
+                </div>
+                <div class="card-section">
+                    <a href="#" class="widget-link">Voir le tableau de bord complet</a>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 12px;">
+                <div class="card-section">
+                    <div class="widget-title">Suggestions IA</div>
+                    <p class="muted">
+                        Ces suggestions sont fictives. Plus tard, tu les généreras avec ton LLM + ton système de matching.
+                    </p>
+                </div>
+                <div class="card-section">
+                    <div class="widget-item">
+                        🔹 <strong>Ahmed – 3ᵉ année Big Data & IA</strong><br>
+                        <span class="muted">Recommandé pour : Stage Développeur IA</span>
+                    </div>
+                    <div class="widget-item">
+                        🔹 <strong>Salma – 2ᵉ année Data Science</strong><br>
+                        <span class="muted">Recommandée pour : Stage Data Analyst</span>
+                    </div>
+                    <a href="#" class="widget-link">Voir tous les profils recommandés</a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- SCRIPT : API FastAPI + logique UI -->
+    <script>
+        const API_BASE = "http://127.0.0.1:8000";
+        const ENTREPRISE_CONNECTEE = "Entreprise Demo";
+
+        const offresContainer = document.getElementById("offres-container");
+        const titreInput = document.getElementById("titre-offre");
+        const villeInput = document.getElementById("ville-offre");
+        const descInput = document.getElementById("desc-offre");
+        const compInput = document.getElementById("comp-offre");
+        const btnAjouter = document.getElementById("btn-ajouter-offre");
+        const messageOffre = document.getElementById("message-offre");
+        const statOffresGauche = document.getElementById("stat-offres");
+        const statOffresDroite = document.getElementById("stat-offres-droite");
+        const composerToggle = document.getElementById("composer-toggle");
+        const composerForm = document.getElementById("composer-form");
+        const emojiButtons = document.querySelectorAll(".emoji-btn");
+        const imageInput = document.getElementById("image-offre");
+        const actionButtons = document.querySelectorAll(".composer-action-item");
+        const openComposerBtn = document.getElementById("open-composer");
+
+        const navAccueil = document.getElementById("nav-accueil");
+        const navOffres = document.getElementById("nav-offres");
+
+        let iaActive = false;
+        let modeFiltre = "toutes"; // "toutes" ou "mes"
+         const linkMesOffres = document.getElementById("link-mes-offres");
+
+            // Quand on clique sur "Voir mes offres" dans Accès rapide
+            linkMesOffres.addEventListener("click", (e) => {
+            e.preventDefault();
+            modeFiltre = "mes";          // on passe en mode "mes offres"
+            setActiveNav(navOffres);     // on active l'onglet Offres dans la navbar
+             chargerOffres();             // on recharge la liste filtrée
+            });
+
+        /* ---------- NAVBAR : changer l’onglet actif ---------- */
+        function setActiveNav(target) {
+            document.querySelectorAll(".nav-icon-block").forEach(b => b.classList.remove("active"));
+            target.classList.add("active");
+        }
+
+        navAccueil.addEventListener("click", () => {
+            modeFiltre = "toutes";
+            setActiveNav(navAccueil);
+            chargerOffres();
+        });
+
+        navOffres.addEventListener("click", () => {
+            modeFiltre = "mes";
+            setActiveNav(navOffres);
+            chargerOffres();
+        });
+
+        /* ---------- FORMULAIRE ---------- */
+        composerToggle.addEventListener("click", () => {
+            composerForm.classList.toggle("show");
+        });
+
+        openComposerBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            composerForm.classList.add("show");
+            document.getElementById("composer").scrollIntoView({ behavior: "smooth" });
+        });
+
+        actionButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const action = btn.dataset.action;
+                composerForm.classList.add("show");
+
+                if (action === "desc") {
+                    descInput.focus();
+                } else if (action === "skills") {
+                    compInput.focus();
+                } else if (action === "ia") {
+                    iaActive = !iaActive;
+                    btn.classList.toggle("active", iaActive);
+                    messageOffre.style.color = "#666";
+                    messageOffre.textContent = iaActive
+                        ? "IA activée : tu pourras générer un résumé ou des recommandations automatiquement."
+                        : "";
+                }
+            });
+        });
+
+        emojiButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                descInput.value += " " + btn.textContent;
+                descInput.focus();
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            chargerOffres();
+        });
+
+        /* ---------- CHARGER OFFRES ---------- */
+        async function chargerOffres() {
+            try {
+                const res = await fetch(API_BASE + "/api/offres");
+                const offres = await res.json();
+
+                offresContainer.innerHTML = "";
+                let nbOffresEntreprise = 0;
+                let totalAffichees = 0;
+
+                offres.forEach(offre => {
+                    const estMoi = (offre.entrepriseNom === ENTREPRISE_CONNECTEE);
+                    if (estMoi) nbOffresEntreprise++;
+
+                    // mode "Offres" => on affiche seulement celles de l'entreprise connectée
+                    if (modeFiltre === "mes" && !estMoi) return;
+
+                    const card = creerCarteOffre(offre, estMoi);
+                    offresContainer.appendChild(card);
+                    totalAffichees++;
+                });
+
+                statOffresGauche.textContent = nbOffresEntreprise;
+                statOffresDroite.textContent = totalAffichees;
+            } catch (e) {
+                console.error("Erreur de chargement des offres", e);
+                offresContainer.innerHTML = "<p style='color:red;font-size:13px;'>Erreur de chargement des offres.</p>";
+            }
+        }
+
+        /* ---------- CARTE OFFRE ---------- */
+        function creerCarteOffre(offre, estMoi) {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            const section = document.createElement("div");
+            section.className = "card-section";
+
+            const title = document.createElement("div");
+            title.className = "feed-card-title";
+            title.textContent = offre.titre;
+
+            const meta = document.createElement("div");
+            meta.className = "feed-meta";
+            let datePub = "";
+            try {
+                datePub = new Date(offre.createdAt).toLocaleDateString("fr-FR");
+            } catch (e) { datePub = ""; }
+
+            meta.textContent = `${offre.entrepriseNom} · ${offre.ville || ""} · Publiée le ${datePub} · ${offre.nbCandidatures || 0} candidatures`;
+
+            const desc = document.createElement("p");
+            desc.className = "muted";
+            desc.textContent = offre.description;
+
+            const skillsDiv = document.createElement("div");
+            (offre.competences || []).forEach(c => {
+                const pill = document.createElement("span");
+                pill.className = "pill-skill";
+                pill.textContent = c;
+                skillsDiv.appendChild(pill);
+            });
+
+            const actions = document.createElement("div");
+            actions.className = "feed-actions";
+
+            const leftText = document.createElement("span");
+            leftText.textContent = "Voir les candidats";
+            actions.appendChild(leftText);
+
+            if (estMoi) {
+                const btnSuppr = document.createElement("span");
+                btnSuppr.style.color = "red";
+                btnSuppr.style.cursor = "pointer";
+                btnSuppr.textContent = "Supprimer l’offre";
+                btnSuppr.onclick = () => supprimerOffre(offre.id);
+                actions.appendChild(btnSuppr);
+            } else {
+                const rightText = document.createElement("span");
+                rightText.textContent = offre.entrepriseNom;
+                rightText.style.color = "#1d4ed8";
+                rightText.style.fontWeight = "600";
+                actions.appendChild(rightText);
+            }
+
+            section.appendChild(title);
+            section.appendChild(meta);
+            section.appendChild(desc);
+            section.appendChild(skillsDiv);
+            section.appendChild(actions);
+
+            card.appendChild(section);
+            return card;
+        }
+
+        /* ---------- AJOUT / SUPPRESSION ---------- */
+        btnAjouter.addEventListener("click", async () => {
+            const titre = titreInput.value.trim();
+            const ville = villeInput.value.trim();
+            const description = descInput.value.trim();
+            const competences = compInput.value
+                .split(",")
+                .map(c => c.trim())
+                .filter(c => c !== "");
+
+            if (!titre || !description) {
+                messageOffre.style.color = "red";
+                messageOffre.textContent = "Titre et description sont obligatoires.";
+                return;
+            }
+
+            try {
+                const res = await fetch(API_BASE + "/api/offres", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        entrepriseNom: ENTREPRISE_CONNECTEE,
+                        titre,
+                        ville,
+                        description,
+                        competences
+                    })
+                });
+
+                if (!res.ok) throw new Error("Erreur HTTP");
+
+                await res.json();
+                messageOffre.style.color = "green";
+                messageOffre.textContent = "Offre ajoutée avec succès.";
+
+                titreInput.value = "";
+                villeInput.value = "";
+                descInput.value = "";
+                compInput.value = "";
+                imageInput.value = "";
+                iaActive = false;
+                actionButtons.forEach(b => b.classList.remove("active"));
+
+                chargerOffres();
+            } catch (e) {
+                console.error(e);
+                messageOffre.style.color = "red";
+                messageOffre.textContent = "Erreur lors de l’ajout de l’offre.";
+            }
+        });
+
+        async function supprimerOffre(id) {
+            if (!confirm("Supprimer cette offre ?")) return;
+
+            try {
+                const res = await fetch(API_BASE + "/api/offres/" + id, {
+                    method: "DELETE"
+                });
+
+                if (!res.ok) throw new Error("Erreur HTTP");
+
+                chargerOffres();
+            } catch (e) {
+                console.error(e);
+                alert("Erreur lors de la suppression.");
+            }
+        }
+    </script>
+
+</body>
+</html>
