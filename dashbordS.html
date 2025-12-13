@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Stagiaire</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f3f4f6;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* NAVBAR */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 10px 28px;
+            background: linear-gradient(90deg, #0f172a, #1d4ed8, #6366f1);
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.35);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1d4ed8;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .topbar-title {
+            color: #e5e7eb;
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        .topbar-center {
+            flex: 1;
+            max-width: 520px;
+        }
+
+        .topbar-search {
+            background: rgba(15, 23, 42, 0.55);
+            border-radius: 999px;
+            padding: 7px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        .topbar-search input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            width: 100%;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e5e7eb;
+            font-size: 12px;
+        }
+
+        .nav-icon-block {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .nav-icon-block:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-icon-block.active {
+            background: #fff;
+            color: #1d4ed8;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.3);
+        }
+
+        .nav-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* LAYOUT */
+        .layout {
+            max-width: 1180px;
+            margin: 18px auto;
+            display: grid;
+            grid-template-columns: 1.1fr 1.7fr 1.1fr;
+            gap: 18px;
+        }
+
+        .column-sticky {
+            position: sticky;
+            top: 88px;
+        }
+
+        /* CARDS */
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+        }
+
+        .card-section {
+            padding: 12px 16px;
+        }
+
+        .card-section+.card-section {
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .cover {
+            height: 64px;
+            background: radial-gradient(circle at top left, #4f46e5, #0f172a);
+        }
+
+        .profile-avatar-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            border: 3px solid #fff;
+            background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .profile-location {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .pill-skill {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e5f3ff;
+            color: #1d4ed8;
+            margin-right: 6px;
+            border-radius: 999px;
+            font-size: 11px;
+        }
+
+        .btn-primary {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">S</div>
+            <div class="topbar-title">Espace Stagiaire</div>
+        </div>
+
+        <div class="topbar-center">
+            <div class="topbar-search">
+                <span>🔍</span>
+                <input type="text" placeholder="Rechercher une offre…">
+            </div>
+        </div>
+
+        <nav class="topbar-right">
+            <div class="nav-icon-block active">
+                <div class="nav-icon">🏠</div> Accueil
+            </div>
+            <div class="nav-icon-block">
+                <div class="nav-icon">📄</div> Offres
+            </div>
+            <div class="nav-icon-block">
+                <div class="nav-icon">💬</div> Messages
+            </div>
+            <div class="nav-icon-block">
+                <div class="nav-icon">👤</div> Profil
+            </div>
+        </nav>
+    </header>
+
+    <!-- LAYOUT -->
+    <main class="layout">
+
+        <!-- COLONNE GAUCHE : PROFIL -->
+        <section class="column-sticky">
+            <div class="card">
+                <div class="cover"></div>
+                <div class="card-section">
+                    <div style="margin-top:-30px;">
+                        <div class="profile-avatar-circle">S</div>
+                    </div>
+                    <div class="profile-name">Stagiaire Demo</div>
+                    <div class="profile-location">El Jadida · ENSAJ</div>
+                    <p class="muted">Étudiant(e) : Big Data & IA</p>
+                </div>
+
+                <div class="card-section">
+                    <p>Candidatures envoyées : <strong>3</strong></p>
+                    <p>Offres enregistrées : <strong>5</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLONNE CENTRALE : OFFRES -->
+        <section>
+
+            <div class="card">
+                <div class="card-section">
+                    <h3 style="margin:0;">Offres disponibles 🔍</h3>
+                </div>
+            </div>
+
+            <div id="offres-container" style="margin-top:12px;">
+
+                <!-- EXEMPLE REEL D’OFFRE affichée dynamiquement -->
+                <div class="card" style="margin-top:12px;">
+                    <div class="card-section">
+                        <div class="feed-card-title">Stage Développeur IA</div>
+                        <div class="feed-meta">Casablanca · 1 jour</div>
+                        <div>
+                            <span class="pill-skill">Python</span>
+                            <span class="pill-skill">TensorFlow</span>
+                            <span class="pill-skill">Machine Learning</span>
+                        </div>
+
+                        <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                            <button class="btn-primary">Candidater</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:12px;">
+                    <div class="card-section">
+                        <div class="feed-card-title">Stage Data Analyst</div>
+                        <div class="feed-meta">Rabat · 2 jours</div>
+                        <span class="pill-skill">SQL</span>
+                        <span class="pill-skill">Power BI</span>
+                        <span class="pill-skill">ETL</span>
+
+                        <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                            <button class="btn-primary">Candidater</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- COLONNE DROITE -->
+        <section class="column-sticky">
+            <div class="card">
+                <div class="card-section">
+                    <h4>Suggestions IA 🤖</h4>
+                    <p class="muted">Offres recommandées selon ton profil</p>
+                </div>
+
+                <div class="card-section">
+                    <p>✨ Stage Data Engineer – Casablanca</p>
+                    <p>✨ Stage Deep Learning – Rabat</p>
+                    <p>✨ Stage Business Intelligence – Casa</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
