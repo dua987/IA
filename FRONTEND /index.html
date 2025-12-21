@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Stagiaire</title>
-
     <style>
         * {
             box-sizing: border-box;
@@ -199,25 +198,27 @@
             font-size: 12px;
             font-weight: 600;
         }
+
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+        }
     </style>
 </head>
 
 <body>
-
     <!-- NAVBAR -->
     <header class="topbar">
         <div class="topbar-left">
             <div class="topbar-logo">S</div>
             <div class="topbar-title">Espace Stagiaire</div>
         </div>
-
         <div class="topbar-center">
             <div class="topbar-search">
                 <span>🔍</span>
                 <input type="text" placeholder="Rechercher une offre…">
             </div>
         </div>
-
         <nav class="topbar-right">
             <div class="nav-icon-block active">
                 <div class="nav-icon">🏠</div> Accueil
@@ -236,8 +237,7 @@
 
     <!-- LAYOUT -->
     <main class="layout">
-
-        <!-- COLONNE GAUCHE : PROFIL -->
+        <!-- COLONNE GAUCHE : PROFIL + UPLOAD CV -->
         <section class="column-sticky">
             <div class="card">
                 <div class="cover"></div>
@@ -249,26 +249,36 @@
                     <div class="profile-location">El Jadida · ENSAJ</div>
                     <p class="muted">Étudiant(e) : Big Data & IA</p>
                 </div>
-
                 <div class="card-section">
                     <p>Candidatures envoyées : <strong>3</strong></p>
                     <p>Offres enregistrées : <strong>5</strong></p>
                 </div>
             </div>
+
+            <!-- Section Upload CV -->
+            <div class="card" style="margin-top:12px;">
+                <div class="card-section">
+                    <h4>Uploader votre CV 📄</h4>
+                    <form id="upload-cv-form" enctype="multipart/form-data">
+                        <input type="file" name="cv" accept=".pdf,.doc,.docx" style="margin-top:8px;" />
+                        <div style="margin-top:10px;">
+                            <button type="submit" class="btn-primary">Envoyer CV</button>
+                        </div>
+                    </form>
+                    <p id="upload-status" style="margin-top:8px; font-size:12px; color:green;"></p>
+                </div>
+            </div>
+
         </section>
 
         <!-- COLONNE CENTRALE : OFFRES -->
         <section>
-
             <div class="card">
                 <div class="card-section">
                     <h3 style="margin:0;">Offres disponibles 🔍</h3>
                 </div>
             </div>
-
             <div id="offres-container" style="margin-top:12px;">
-
-                <!-- EXEMPLE REEL D’OFFRE affichée dynamiquement -->
                 <div class="card" style="margin-top:12px;">
                     <div class="card-section">
                         <div class="feed-card-title">Stage Développeur IA</div>
@@ -278,7 +288,6 @@
                             <span class="pill-skill">TensorFlow</span>
                             <span class="pill-skill">Machine Learning</span>
                         </div>
-
                         <div style="display:flex; justify-content:flex-end; margin-top:10px;">
                             <button class="btn-primary">Candidater</button>
                         </div>
@@ -292,35 +301,48 @@
                         <span class="pill-skill">SQL</span>
                         <span class="pill-skill">Power BI</span>
                         <span class="pill-skill">ETL</span>
-
                         <div style="display:flex; justify-content:flex-end; margin-top:10px;">
                             <button class="btn-primary">Candidater</button>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </section>
 
-        <!-- COLONNE DROITE -->
+        <!-- COLONNE DROITE : SUGGESTIONS IA -->
         <section class="column-sticky">
             <div class="card">
                 <div class="card-section">
                     <h4>Suggestions IA 🤖</h4>
                     <p class="muted">Offres recommandées selon ton profil</p>
                 </div>
-
                 <div class="card-section">
                     <p>✨ Stage Data Engineer – Casablanca</p>
                     <p>✨ Stage Deep Learning – Rabat</p>
                     <p>✨ Stage Business Intelligence – Casa</p>
                 </div>
             </div>
-
         </section>
-
     </main>
+
+    <!-- SCRIPT UPLOAD CV -->
+    <script>
+        document.getElementById('upload-cv-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const fileInput = this.elements['cv'];
+            const status = document.getElementById('upload-status');
+            if (fileInput.files.length > 0) {
+                status.style.color = "green";
+                status.textContent = "CV envoyé avec succès : " + fileInput.files[0].name;
+                fileInput.value = ""; // reset
+            } else {
+                status.style.color = "red";
+                status.textContent = "Veuillez choisir un fichier.";
+            }
+        });
+    </script>
+
+
 
 </body>
 

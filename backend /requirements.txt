@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pymongo
+gridfs
+python-jose
+passlib[bcrypt]

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Résultats de recherche</title>
+</head>
+
+<body>
+    <h1>Résultats pour "<span id="searchQuery"></span>"</h1>
+    <div id="results"></div>
+
+    <script>
+        // Get the query from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        document.getElementById('searchQuery').textContent = query;
+
+        // Example: static data search (replace with your dynamic data)
+        const offers = [
+            { title: "Stage Développeur IA", location: "Casablanca", tags: ["Python", "TensorFlow", "Machine Learning"] },
+            { title: "Stage Data Analyst", location: "Rabat", tags: ["SQL", "Power BI", "ETL"] }
+        ];
+
+        const resultsDiv = document.getElementById('results');
+        const filtered = offers.filter(o => o.title.toLowerCase().includes(query.toLowerCase()));
+
+        if (filtered.length === 0) {
+            resultsDiv.textContent = "Aucune offre trouvée.";
+        } else {
+            filtered.forEach(o => {
+                const div = document.createElement('div');
+                div.innerHTML = `<h3>${o.title} - ${o.location}</h3>
+                                 <p>Tags: ${o.tags.join(", ")}</p>`;
+                resultsDiv.appendChild(div);
+            });
+        }
+    </script>
+</body>
+
+</html>
